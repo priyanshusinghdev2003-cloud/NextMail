@@ -8,6 +8,7 @@ export default function Page() {
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
 
   const verifyUserEmail = async (token) => {
     try {
@@ -18,12 +19,14 @@ export default function Page() {
       });
 
       const data = await response.json();
+      console.log(data);
 
       if (data?.success) {
         setVerified(true);
       } else {
         setError(true);
       }
+      setMessage(data?.message);
     } catch {
       setError(true);
     } finally {
@@ -47,6 +50,7 @@ export default function Page() {
       verifyUserEmail(token);
     }
   }, [token]);
+  console.log(token);
 
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
@@ -71,9 +75,7 @@ export default function Page() {
             <h2 className="text-2xl font-semibold text-green-600">
               Email Verified!
             </h2>
-            <p className="text-gray-600 mt-2">
-              Your email has been successfully verified.
-            </p>
+            <p className="text-gray-600 mt-2">{message}</p>
 
             <Link
               href="/login"
@@ -96,6 +98,7 @@ export default function Page() {
             <p className="text-gray-600 mt-2">
               The verification link is invalid or expired.
             </p>
+            <p className="text-gray-600 mt-2">{message}</p>
 
             <div className="mt-6 flex justify-center gap-3">
               <Link

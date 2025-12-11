@@ -4,7 +4,8 @@ import User from "@/models/userModel";
 
 export const sendEmail = async ({ email, emailType, userId }) => {
   try {
-    const hashToken = await bcryptjs.hash(userId.toString(), 10);
+    let hashToken = await bcryptjs.hash(userId.toString(), 10);
+    hashToken = hashToken.replace(".", "");
 
     if (emailType == "VERIFY") {
       await User.findByIdAndUpdate(userId, {
